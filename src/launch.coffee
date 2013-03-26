@@ -20,10 +20,12 @@ document.addEventListener 'DOMContentLoaded', ->
     messageAdded: (element, index, data) ->
       element.parentNode.scrollTop = element.parentNode.scrollHeight
       try $(element).effect 'highlight'
-    input: ko.observable()
+    inputBox: ko.observable()
     isInputBoxSelected: ko.observable(true)
-    inputSubmitted: (form) -> ko.postbox.publish 'viewModel.inputSubmitted', text if text = @input()?.trim()
-    inputKeyUp: (data, event) -> ko.postbox.publish 'viewModel.inputKeyUp', event.keyCode
+    input: ko.observable().extend {notify: 'always'}
+    inputSubmitted: (form) -> @input text if text if text = @inputBox()?.trim()
+    keys: ko.observable().extend {notify: 'always'}
+    inputKeyUp: (data, event) -> @keys event.keyCode
   ko.applyBindings viewModel
 
   # Just for debugging in browser's JS console
@@ -40,9 +42,9 @@ document.addEventListener 'DOMContentLoaded', ->
       currentSelection: -> if @idx() < @elements().length then @elements()[@idx()] else ''
     inputHistory.selected = ko.computed -> inputHistory.currentSelection()
 
-    inputHistory.selected.subscribe (text) -> viewModel.input text
-    ko.postbox.subscribe 'viewModel.inputSubmitted', (text) -> inputHistory.push text
-    ko.postbox.subscribe 'viewModel.inputKeyUp', (keyCode) ->
+    inputHistory.selected.subscribe (text) -> viewModel.inputBox text
+    viewModel.input.subscribe (text) -> inputHistory.push text
+    viewModel.keys.subscribe (keyCode) ->
       switch keyCode
         when 27 then inputHistory.escape()
         when 38 then inputHistory.up()
@@ -53,7 +55,7 @@ document.addEventListener 'DOMContentLoaded', ->
     # need to move out into serverMessagingProtocol(), and occur in response
     # to events triggered here.
 
-    ko.postbox.subscribe 'viewModel.inputSubmitted', (text) ->
+    viewModel.input.subscribe (text) ->
       if match = text.match /^\/nick\s+(.+)/
         sendPacket {action: 'identify', data: match[1]}
       else if text.match /^\//
