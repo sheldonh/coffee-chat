@@ -10,7 +10,7 @@ document.addEventListener 'DOMContentLoaded', ->
   # Firefox: https://bugzilla.mozilla.org/show_bug.cgi?id=614304
   window.addEventListener 'keydown', (e) -> e.preventDefault() if e.keyCode == 27
 
-  socket = io.connect("http://localhost:8000")
+  socket = io.connect()
   sendPacket = (data) -> socket.emit 'data', data
 
   viewModel =

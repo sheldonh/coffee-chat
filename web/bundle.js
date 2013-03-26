@@ -12,7 +12,7 @@
         return e.preventDefault();
       }
     });
-    socket = io.connect("http://localhost:8000");
+    socket = io.connect();
     sendPacket = function(data) {
       return socket.emit('data', data);
     };
