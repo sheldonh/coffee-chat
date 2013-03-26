@@ -180,6 +180,6 @@
     });
   });
 
-  web_server.listen(8000);
+  web_server.listen(process.env.PORT || 8000);
 
 }).call(this);

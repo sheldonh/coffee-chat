@@ -83,4 +83,4 @@ io.sockets.on 'connection', (socket) ->
   socket.on 'disconnect', -> service.disconnect socket.id, (parting_identity) ->
     io.sockets.emit 'data', {sender: parting_identity, action: 'disconnect'}
 
-web_server.listen(8000)
+web_server.listen(process.env.PORT || 8000)
