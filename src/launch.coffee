@@ -11,20 +11,30 @@ document.addEventListener 'DOMContentLoaded', ->
   socket = io.connect()
   sendPacket = (data) -> socket.emit 'data', data
 
+  titleBlinker =
+    default: 'Chat'
+    blink:  ->
+      if document.hasFocus? and !document.hasFocus()
+        viewModel.title "...incoming..."
+        window.setTimeout (-> viewModel.title titleBlinker.default), 500
+        window.setTimeout titleBlinker.blink, 1000
+
   viewModel =
+    title: ko.observable(titleBlinker.default)
     identity: ko.observable()
     members: ko.observableArray()
     messages: ko.observableArray()
     messageAdded: (element, index, data) ->
       element.parentNode.scrollTop = element.parentNode.scrollHeight
       jQuery(element).effect 'highlight' if jQuery?.prototype.effect?
+      titleBlinker.blink() if data.action is 'say'
     inputBox: ko.observable()
     isInputBoxSelected: ko.observable(true)
     input: ko.observable().extend {notify: 'always'}
     inputSubmitted: (form) -> @input text if text if text = @inputBox()?.trim()
     keys: ko.observable().extend {notify: 'always'}
     inputKeyUp: (data, event) -> @keys event.keyCode
-  ko.applyBindings viewModel
+  ko.applyBindings viewModel, document.getElementsByTagName('html')[0]
 
   # Just for debugging in browser's JS console
   window.viewModel = viewModel
