@@ -31,6 +31,9 @@ document.addEventListener 'DOMContentLoaded', ->
   # Just for debugging in browser's JS console
   global.viewModel = viewModel
 
+  document.getElementById('chat-preconnect').style.display = 'none'
+  document.getElementById('chat-client').style.display = ''
+
   userInputProtocol = ->
     inputHistory =
       elements: ko.observableArray()
@@ -70,8 +73,6 @@ document.addEventListener 'DOMContentLoaded', ->
       switch data.action
         when 'welcome'
           viewModel.identity data.data
-          document.getElementById('chat-preconnect').style.display = 'none'
-          document.getElementById('chat-client').style.display = ''
           sendPacket {action: 'identify', data: preferred} if preferred = store.get 'identity'
         when 'identify'
           if data.sender is viewModel.identity()
