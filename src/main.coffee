@@ -6,7 +6,7 @@ content_type = (url) ->
     switch matched[1]
       when 'css' then 'text/css'
       when 'html' then 'text/html'
-      when 'js' then 'text/javascript'
+      when 'js' then 'application/javascript'
       else 'text/plain'
 
 web_request_handler = (req, res) ->
