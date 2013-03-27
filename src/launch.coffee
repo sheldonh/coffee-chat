@@ -90,5 +90,20 @@ document.addEventListener 'DOMContentLoaded', ->
         when 'identify'
           if (i = viewModel.members.indexOf data.sender) >= 0
             viewModel.members.splice i, 1, data.data
+
+      # Google Analytics
+      if data.action is 'google-ua'
+        do ->
+          global._gaq ?= []
+          _gaq = global._gaq
+          _gaq.push ['_setAccount', data.data]
+          _gaq.push ['_trackPageview']
+
+          ga = document.createElement 'script'
+          ga.type = 'text/javascript'
+          ga.async = true
+          ga.src = "#{if document.location.protocol is 'https:' then 'https://ssl' else 'http://www'}.google-analytics.com/ga.js"
+          s = document.getElementsByTagName('script')[0]
+          s.parentNode.insertBefore(ga, s)
   serverMessagingProtocol()
 

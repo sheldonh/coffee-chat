@@ -72,6 +72,8 @@ service = new Service()
 
 io.sockets.on 'connection', (socket) ->
   service.connect socket.id, (initial_identity) ->
+    if process.env.GOOGLE_UA?
+      socket.emit 'data', {action: 'google-ua', data: process.env.GOOGLE_UA}
     socket.emit 'data', {action: 'welcome', data: initial_identity}
     socket.broadcast.emit 'data', {sender: initial_identity, action: 'connect'}
 
