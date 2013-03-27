@@ -1,9 +1,7 @@
 # Requires that the HTML document include these libraries:
 #
-#   Requires: knockout
+#   Requires: knockout, store
 #   Optional: jquery + jquery-ui (for highlight effect)
-
-store = require 'store'
 
 document.addEventListener 'DOMContentLoaded', ->
 
@@ -29,7 +27,7 @@ document.addEventListener 'DOMContentLoaded', ->
   ko.applyBindings viewModel
 
   # Just for debugging in browser's JS console
-  global.viewModel = viewModel
+  window.viewModel = viewModel
 
   document.getElementById('chat-preconnect').style.display = 'none'
   document.getElementById('chat-client').style.display = ''
@@ -97,8 +95,8 @@ document.addEventListener 'DOMContentLoaded', ->
       # Google Analytics
       if data.action is 'google-ua'
         do ->
-          global._gaq ?= []
-          _gaq = global._gaq
+          window._gaq ?= []
+          _gaq = window._gaq
           _gaq.push ['_setAccount', data.data]
           _gaq.push ['_trackPageview']
 
