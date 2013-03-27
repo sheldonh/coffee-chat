@@ -19,7 +19,7 @@ document.addEventListener 'DOMContentLoaded', ->
     messages: ko.observableArray()
     messageAdded: (element, index, data) ->
       element.parentNode.scrollTop = element.parentNode.scrollHeight
-      try $(element).effect 'highlight'
+      jQuery(element).effect 'highlight' if jQuery?.prototype.effect?
     inputBox: ko.observable()
     isInputBoxSelected: ko.observable(true)
     input: ko.observable().extend {notify: 'always'}
@@ -70,6 +70,7 @@ document.addEventListener 'DOMContentLoaded', ->
       switch data.action
         when 'welcome'
           viewModel.identity data.data
+          document.getElementById('chat-client').style.display = ''
           sendPacket {action: 'identify', data: preferred} if preferred = store.get 'identity'
         when 'identify'
           if data.sender is viewModel.identity()

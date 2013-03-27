@@ -4,13 +4,10 @@
     <meta charset="utf-8" />
     <title>Chat</title>
     <link rel="stylesheet" href="chat.css" type="text/css" />
-    <script type="application/javascript" src="/socket.io/socket.io.js"></script>
-    <script type="application/javascript" src="vendor/knockout-2.2.1.min.js"></script>
-    <script type="application/javascript" src="bundle.js"></script>
   </head>
   <body>
     <h1>Chat</h1>
-    <div id='chat-client'>
+    <div id='chat-client' style='display: none;'>
       <div id='chat-identity' data-bind='text: identity'></div>
       <div id='chat-box' data-bind='foreach: {data: messages, afterAdd: messageAdded}'>
         <div class='notice' data-bind='if: action == "welcome"'>
@@ -47,5 +44,8 @@
         </form>
       </div>
     </div>
+    <script type="application/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="application/javascript" src="vendor/knockout-2.2.1.min.js"></script>
+    <script type="application/javascript" src="bundle.js"></script>
   </body>
 </html>
