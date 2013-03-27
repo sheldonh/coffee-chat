@@ -7,6 +7,7 @@
   </head>
   <body>
     <h1>Chat</h1>
+    <div id='chat-preconnect'>Not connected</div>
     <div id='chat-client' style='display: none;'>
       <div id='chat-identity' data-bind='text: identity'></div>
       <div id='chat-box' data-bind='foreach: {data: messages, afterAdd: messageAdded}'>
