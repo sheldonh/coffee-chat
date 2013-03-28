@@ -20,9 +20,14 @@ module.exports = (grunt) ->
           {expand: true, cwd: 'src/', src: ['**/*.{css,html}'], dest: 'web/'}
         ]
 
+    uglify:
+      client:
+        files: [{src: 'web/launch.js', dest: 'web/launch.min.js'}]
+
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-copy'
+  grunt.loadNpmTasks 'grunt-contrib-uglify'
 
-  grunt.registerTask 'default', 'Clean & build everything', ['clean', 'coffee', 'copy']
+  grunt.registerTask 'default', 'Clean & build everything', ['clean', 'coffee', 'copy', 'uglify']
 
