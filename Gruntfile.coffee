@@ -3,25 +3,26 @@ module.exports = (grunt) ->
   grunt.initConfig
     pkg: grunt.file.readJSON 'package.json'
 
+    clean:
+      client: 'web'
+      server: 'server'
+
     coffee:
       client:
-        files:
-          'web/launch.js': 'src/launch.coffee'
+        files: [{src: 'src/launch.coffee', dest: 'web/launch.js'}]
       server:
-        files:
-          'server/main.js': 'src/main.coffee'
+        files: [{src: 'src/main.coffee', dest: 'server/main.js'}]
 
+    copy:
+      client:
+        files: [
+          {src: ['vendor/**'], dest: 'web/'},
+          {expand: true, cwd: 'src/', src: ['**/*.{css,html}'], dest: 'web/'}
+        ]
+
+  grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-contrib-copy'
 
-  grunt.registerTask 'assets', 'Copy static assets to client', ->
-    grunt.file.copy 'vendor/knockout-2.2.1.min.js', 'web/vendor/knockout-2.2.1.min.js'
-    grunt.file.copy 'vendor/store-1.3.7.min.js', 'web/vendor/store-1.3.7.min.js'
-    grunt.file.copy 'src/chat.css', 'web/chat.css'
-    grunt.file.copy 'src/index.html', 'web/index.html'
-
-  grunt.registerTask 'clean', 'Clean out build results', ->
-    grunt.file.delete 'server'
-    grunt.file.delete 'web'
-
-  grunt.registerTask 'default', 'Clean & build everything', ['clean', 'coffee', 'assets']
+  grunt.registerTask 'default', 'Clean & build everything', ['clean', 'coffee', 'copy']
 
