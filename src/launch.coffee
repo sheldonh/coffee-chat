@@ -29,7 +29,6 @@ document.addEventListener 'DOMContentLoaded', ->
       jQuery(element).effect 'highlight' if jQuery?.prototype.effect?
       titleBlinker.blink() if data.action is 'say'
     inputBox: ko.observable()
-    isInputBoxSelected: ko.observable(true)
     input: ko.observable().extend {notify: 'always'}
     inputSubmitted: (form) -> @input text if text if text = @inputBox()?.trim()
     keys: ko.observable().extend {notify: 'always'}
@@ -41,6 +40,7 @@ document.addEventListener 'DOMContentLoaded', ->
 
   document.getElementById('chat-preconnect').style.display = 'none'
   document.getElementById('chat-client').style.display = ''
+  document.getElementById('chat-input').focus()
 
   userInputProtocol = ->
     inputHistory =
