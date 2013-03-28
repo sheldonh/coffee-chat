@@ -34,6 +34,12 @@ body {
   position: relative;
   float:left;
 }
+#chat-box .identity {
+  font-weight: bold;
+}
+#chat-box .notice .identity {
+  font-weight: normal;
+}
 #chat-identity-list-container {
   padding: 0.25em;
   width: 9.26em;
