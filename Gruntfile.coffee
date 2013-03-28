@@ -11,7 +11,9 @@ module.exports = (grunt) ->
       client:
         files: [{src: 'src/launch.coffee', dest: 'web/launch.js'}]
       server:
-        files: [{src: 'src/main.coffee', dest: 'server/main.js'}]
+        files:
+          'server/main.js': 'src/main.coffee'
+          'server/static-web-request-handler.js': 'src/static-web-request-handler.coffee'
 
     copy:
       client:

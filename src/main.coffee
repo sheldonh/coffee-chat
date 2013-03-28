@@ -1,39 +1,10 @@
-fs = require 'fs'
-path = require 'path'
+{StaticWebRequestHandler} = require './static-web-request-handler'
 
-content_type = (url) ->
-  if matched = url.match /\.(\w+)$/
-    switch matched[1]
-      when 'css' then 'text/css'
-      when 'html' then 'text/html'
-      when 'js' then 'application/javascript'
-      else 'text/plain'
+requestHandler = new StaticWebRequestHandler('web', process.env.LIMIT_HOST)
+webServer = require('http').createServer requestHandler.handle
+io = require('socket.io').listen webServer
 
-web_request_handler = (req, res) ->
-  reply = (code, contentType, body) ->
-    res.writeHead code, {'Content-Type': contentType}; res.end body
-
-  requestHost = req.headers.host
-  requestHost = match[1] if match = req.headers.host?.match /^(.+):\d+$/
-  if process.env.LIMIT_HOST? and requestHost isnt process.env.LIMIT_HOST
-    reply 403, 'text/plain', "Forbidden\n"
-
-  url = if req.url is '/' then '/index.html' else req.url
-  source = path.join('web', url)
-  if source.indexOf('web/') == 0
-    fs.readFile source, (error, data) ->
-      if not error
-        reply 200, content_type(url), data
-      else
-        reply 404, 'text/plain', "Object not found\n"
-  else
-    # Directory traversal attempt, just get out ASAP
-    res.connection.end()
-
-web_server = require('http').createServer web_request_handler
-io = require('socket.io').listen web_server
-
-class Service
+class ChatService
   constructor: ->
     @guest_counter = 0
     @identities = {}
@@ -75,8 +46,9 @@ class Service
   sender_identity: (id) ->
     (x for x of @identities when @identities[x] is id)[0]
 
-service = new Service()
+service = new ChatService()
 
+# Service protocol muddled up with websockets
 io.sockets.on 'connection', (socket) ->
   service.connect socket.id, (initial_identity) ->
     if process.env.GOOGLE_UA?
@@ -92,4 +64,4 @@ io.sockets.on 'connection', (socket) ->
   socket.on 'disconnect', -> service.disconnect socket.id, (parting_identity) ->
     io.sockets.emit 'data', {sender: parting_identity, action: 'disconnect'}
 
-web_server.listen(process.env.PORT || 8000)
+webServer.listen(process.env.PORT || 8000)
