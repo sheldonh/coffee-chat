@@ -1,6 +1,8 @@
 body {
   font-family: Verdana, Geneva, sans-serif;
   color: #404040;
+  margin-top: 1em;
+  margin-left: 1em;
 }
 #chat-client .error {
   font-style: italic;
