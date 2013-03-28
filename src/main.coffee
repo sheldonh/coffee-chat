@@ -10,15 +10,22 @@ content_type = (url) ->
       else 'text/plain'
 
 web_request_handler = (req, res) ->
+  reply = (code, contentType, body) ->
+    res.writeHead code, {'Content-Type': contentType}; res.end body
+
+  requestHost = req.headers.host
+  requestHost = match[1] if match = req.headers.host?.match /^(.+):\d+$/
+  if process.env.LIMIT_HOST? and requestHost isnt process.env.LIMIT_HOST
+    reply 403, 'text/plain', "Forbidden\n"
+
   url = if req.url is '/' then '/index.html' else req.url
   source = path.join('web', url)
   if source.indexOf('web/') == 0
     fs.readFile source, (error, data) ->
-      reply = (code, headers, body) -> res.writeHead code, headers; res.end body
       if not error
-        reply 200, {'Content-Type': content_type url}, data
+        reply 200, content_type(url), data
       else
-        reply 404, {'Content-Type': 'text/plain'}, "Object not found: #{url}\n"
+        reply 404, 'text/plain', "Object not found\n"
   else
     # Directory traversal attempt, just get out ASAP
     res.connection.end()
