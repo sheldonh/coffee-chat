@@ -11,23 +11,23 @@ document.addEventListener 'DOMContentLoaded', ->
   socket = io.connect()
   sendPacket = (data) -> socket.emit 'data', data
 
-  titleBlinker =
+  documentTitle =
     default: 'Chat'
     blink:  ->
       if document.hasFocus? and !document.hasFocus()
         viewModel.title "...incoming..."
-        window.setTimeout (-> viewModel.title titleBlinker.default), 500
-        window.setTimeout titleBlinker.blink, 1000
+        window.setTimeout (-> viewModel.title documentTitle.default), 500
+        window.setTimeout documentTitle.blink, 1000
 
   viewModel =
-    title: ko.observable(titleBlinker.default)
+    title: ko.observable(documentTitle.default)
     identity: ko.observable()
     members: ko.observableArray()
     messages: ko.observableArray()
     messageAdded: (element, index, data) ->
       element.parentNode.scrollTop = element.parentNode.scrollHeight
       jQuery(element).effect 'highlight' if jQuery?.prototype.effect?
-      titleBlinker.blink() if data.action is 'say'
+      documentTitle.blink() if data.action is 'say'
     inputBox: ko.observable()
     input: ko.observable().extend {notify: 'always'}
     inputSubmitted: (form) -> @input text if text if text = @inputBox()?.trim()
