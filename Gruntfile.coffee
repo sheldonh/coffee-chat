@@ -6,6 +6,7 @@ module.exports = (grunt) ->
     clean:
       client: 'web'
       server: 'server'
+      test: ['test/**/*-test.js']
 
     coffee:
       client:
@@ -14,6 +15,9 @@ module.exports = (grunt) ->
         files:
           'server/main.js': 'src/main.coffee'
           'server/static-web-request-handler.js': 'src/static-web-request-handler.coffee'
+      test:
+        files:
+          'test/truth-test.js': 'test/truth-test.coffee'
 
     copy:
       client:
@@ -21,6 +25,15 @@ module.exports = (grunt) ->
           {src: ['vendor/**'], dest: 'web/'},
           {expand: true, cwd: 'src/', src: ['**/*.{css,html}'], dest: 'web/'}
         ]
+
+    simplemocha:
+      options:
+        timeout: 3000
+        ignoreLeaks: false
+        ui: 'bdd'
+        report: 'tap'
+      all:
+        src: ['test/**/*-test.js']
 
     uglify:
       client:
@@ -30,6 +43,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
+  grunt.loadNpmTasks 'grunt-simple-mocha'
 
-  grunt.registerTask 'default', 'Clean & build everything', ['clean', 'coffee', 'copy', 'uglify']
+  grunt.registerTask 'default', 'Clean & build everything', ['clean', 'coffee', 'copy', 'simplemocha', 'uglify']
 
