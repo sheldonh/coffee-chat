@@ -1,7 +1,10 @@
 {StaticWebRequestHandler} = require './static-web-request-handler'
 
+fs = require('fs')
 requestHandler = new StaticWebRequestHandler('web', process.env.LIMIT_HOST)
-webServer = require('http').createServer requestHandler.handle
+key = fs.readFileSync('./key.pem').toString()
+cert = fs.readFileSync('./cert.pem').toString()
+webServer = require('https').createServer({key: key, cert: cert}, requestHandler.handle)
 io = require('socket.io').listen webServer
 
 class ChatService
@@ -64,4 +67,4 @@ io.sockets.on 'connection', (socket) ->
   socket.on 'disconnect', -> service.disconnect socket.id, (parting_identity) ->
     io.sockets.emit 'data', {sender: parting_identity, action: 'disconnect'}
 
-webServer.listen(process.env.PORT || 8000)
+webServer.listen(process.env.PORT || 443)
