@@ -14,6 +14,7 @@ module.exports = (grunt) ->
       server:
         files:
           'server/main.js': 'src/main.coffee'
+          'server/mark_down_message.js': 'src/mark_down_message.coffee'
           'server/static-web-request-handler.js': 'src/static-web-request-handler.coffee'
       test:
         files:

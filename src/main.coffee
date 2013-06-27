@@ -1,4 +1,5 @@
-{StaticWebRequestHandler} = require './static-web-request-handler'
+StaticWebRequestHandler = require './static-web-request-handler'
+mark_down_message = require './mark_down_message'
 
 fs = require('fs')
 requestHandler = new StaticWebRequestHandler('web', process.env.LIMIT_HOST)
@@ -38,7 +39,8 @@ class ChatService
           delete @identities[data.sender]
           broadcast data
       when 'say'
-        broadcast data
+        # This was an experiment. It works. Now move the markdown processing into the client.
+        broadcast {sender: data.sender, action: data.action, data: mark_down_message data.data}
       when 'members'
         everyone_except_sender = (Object.keys @identities).filter (x) -> x isnt data.sender
         reply {action: 'members', data: everyone_except_sender}
@@ -67,4 +69,4 @@ io.sockets.on 'connection', (socket) ->
   socket.on 'disconnect', -> service.disconnect socket.id, (parting_identity) ->
     io.sockets.emit 'data', {sender: parting_identity, action: 'disconnect'}
 
-webServer.listen(process.env.PORT || 443)
+webServer.listen(443)

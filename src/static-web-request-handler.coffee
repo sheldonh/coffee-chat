@@ -34,4 +34,4 @@ class StaticWebRequestHandler
   reply: (res, code, contentType, body) ->
     res.writeHead code, {'Content-Type': contentType}; res.end body
 
-exports.StaticWebRequestHandler = StaticWebRequestHandler
+module.exports = StaticWebRequestHandler

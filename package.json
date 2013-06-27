@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "socket.io": "~0.9.13"
+    "socket.io": "~0.9.13",
+    "markdown": "~0.4.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

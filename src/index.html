@@ -31,7 +31,7 @@
         </div>
 
         <div class='message' data-bind='if: action == "say"'>
-          <span class='identity' data-bind='text: sender'></span>: <span class='text' data-bind='text: data'></span>
+          <span class='identity' data-bind='text: sender'></span>: <span class='text' data-bind='html: data'></span>
         </div>
 
         <div class='error' data-bind='text: data, if: action == "error"'></div>

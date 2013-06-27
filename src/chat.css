@@ -36,11 +36,11 @@ body {
   position: relative;
   float:left;
 }
-#chat-box .identity {
+#chat-box .message .identity {
   font-weight: bold;
 }
-#chat-box .notice .identity {
-  font-weight: normal;
+#chat-box .message .text * {
+  display: inline;
 }
 #chat-identity-list-container {
   padding: 0.25em;
