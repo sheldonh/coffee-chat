@@ -24,7 +24,7 @@ module.exports = (grunt) ->
       client:
         files: [
           {src: ['vendor/**'], dest: 'web/'},
-          {expand: true, cwd: 'src/', src: ['**/*.{css,html}'], dest: 'web/'}
+          {expand: true, cwd: 'src/', src: ['**/*.{css,html,wav}'], dest: 'web/'}
         ]
 
     simplemocha:

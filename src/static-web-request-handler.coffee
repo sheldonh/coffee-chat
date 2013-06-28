@@ -29,6 +29,7 @@ class StaticWebRequestHandler
         when 'css' then 'text/css'
         when 'html' then 'text/html'
         when 'js' then 'application/javascript'
+        when 'wav' then 'audio/wav'
         else 'text/plain'
 
   reply: (res, code, contentType, body) ->

@@ -27,7 +27,11 @@ document.addEventListener 'DOMContentLoaded', ->
     messageAdded: (element, index, data) ->
       element.parentNode.scrollTop = element.parentNode.scrollHeight
       jQuery(element).effect 'highlight' if jQuery?.prototype.effect?
-      documentTitle.blink() if data.action is 'say'
+      if data.action is 'say'
+        documentTitle.blink() if data.action is 'say'
+        soundHandle = document.getElementById('soundHandle')
+        soundHandle.src = 'button-3.wav'
+        soundHandle.play()
     inputBox: ko.observable()
     input: ko.observable().extend {notify: 'always'}
     inputSubmitted: (form) -> @input text if text if text = @inputBox()?.trim()
