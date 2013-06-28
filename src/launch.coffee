@@ -3,6 +3,8 @@
 #   Requires: knockout, store
 #   Optional: jquery + jquery-ui (for highlight effect)
 
+mark_down_message = require('./mark_down_message')
+
 document.addEventListener 'DOMContentLoaded', ->
 
   # Firefox: https://bugzilla.mozilla.org/show_bug.cgi?id=614304
@@ -94,7 +96,11 @@ document.addEventListener 'DOMContentLoaded', ->
       # chatbox widget
       if ['welcome', 'connect', 'disconnect', 'identify', 'say', 'error'].indexOf(data.action) >= 0
         viewModel.messages.shift() if viewModel.messages().length >= 1000
-        viewModel.messages.push {sender: data.sender, action: data.action, data: data.data}
+        message =
+          sender: data.sender
+          action: data.action
+          data: if data.action is 'say' then mark_down_message data.data else data.data
+        viewModel.messages.push message
 
       # identity list widget
       switch data.action

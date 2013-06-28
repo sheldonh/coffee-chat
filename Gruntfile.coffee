@@ -10,11 +10,12 @@ module.exports = (grunt) ->
 
     coffee:
       client:
-        files: [{src: 'src/launch.coffee', dest: 'web/launch.js'}]
+        files:
+          'web/launch.js': 'src/launch.coffee'
+          'web/mark_down_message.js': 'src/mark_down_message.coffee'
       server:
         files:
           'server/main.js': 'src/main.coffee'
-          'server/mark_down_message.js': 'src/mark_down_message.coffee'
           'server/static-web-request-handler.js': 'src/static-web-request-handler.coffee'
       test:
         files:
@@ -26,6 +27,11 @@ module.exports = (grunt) ->
           {src: ['vendor/**'], dest: 'web/'},
           {expand: true, cwd: 'src/', src: ['**/*.{css,html,wav}'], dest: 'web/'}
         ]
+
+    browserify:
+      client:
+        src: ['web/launch.js', 'server/mark_down_message.js', './node_modules/markdown/lib/markdown.js']
+        dest: 'web/bundle.js'
 
     simplemocha:
       options:
@@ -40,11 +46,12 @@ module.exports = (grunt) ->
       client:
         files: [{src: 'web/launch.js', dest: 'web/launch.min.js'}]
 
+  grunt.loadNpmTasks 'grunt-browserify'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-simple-mocha'
 
-  grunt.registerTask 'default', 'Clean & build everything', ['clean', 'coffee', 'copy', 'simplemocha', 'uglify']
+  grunt.registerTask 'default', 'Clean & build everything', ['clean', 'coffee', 'copy', 'simplemocha', 'browserify', 'uglify']
 
