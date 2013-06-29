@@ -24,9 +24,10 @@ module.exports = (grunt) ->
     copy:
       client:
         files: [
-          {src: ['vendor/**'], dest: 'web/'},
+          {src: ['vendor/**', '!vendor/foundation-4.2.3'], dest: 'web/'},
           {expand: true, cwd: 'src/', src: ['**/*.{css,html,wav}'], dest: 'web/'}
         ]
+      foundation: {expand: true, cwd: 'vendor/foundation-4.2.3', src: ['{css,img,js}/**'], dest: 'web/'}
 
     browserify:
       client:

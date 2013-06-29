@@ -1,56 +1,109 @@
 <!DOCTYPE html>
-<html>
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <title data-bind='text: title'></title>
+
+    <!-- If you are using CSS version, only link these 2 files, you may add app.css to use for your overrides if you like. -->
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/foundation.css" />
+
     <link rel="stylesheet" href="chat.css" type="text/css" />
+
+    <script src="js/vendor/custom.modernizr.js"></script>
   </head>
+
   <body>
     <div id='chat-preconnect'>Not connected</div>
-    <div id='chat-client' style='display: none;'>
-      <div id='chat-identity' data-bind='text: identity'></div>
-      <div id='chat-box' data-bind='foreach: {data: messages, afterAdd: messageAdded}'>
-        <div class='notice' data-bind='if: action == "welcome"'>
-          <div class='software-source'>
-            This is <a href='https://github.com/sheldonh/coffee-chat' target='_blank'>coffee-chat</a>.
+    <div class="row">
+      <div class="large-12 columns">
+        <div id='chat-client' class="panel radius" style='display: none;'>
+          <div class="row">
+            <div class="large-12 columns">
+                <div id='chat-identity' data-bind='text: identity'></div>
+            </div>
           </div>
-          You have connected as <span class='identity' data-bind='text: data'></span>.
-          Use the /nick command to rename.
-        </div>
+          <div class="row">
+            <div class="large-10 columns">
+                <div id='chat-box' data-bind='foreach: {data: messages, afterAdd: messageAdded}'>
+                  <div class='notice' data-bind='if: action == "welcome"'>
+                    <div class='software-source'>
+                      This is <a href='https://github.com/sheldonh/coffee-chat' target='_blank'>coffee-chat</a>.
+                    </div>
+                    You have connected as <span class='identity' data-bind='text: data'></span>.
+                    Use the /nick command to rename.
+                  </div>
 
-        <div class='notice' data-bind='if: action == "connect"'>
-          <span class='identity' data-bind='text: sender'></span> has connected.
-        </div>
+                  <div class='notice' data-bind='if: action == "connect"'>
+                    <span class='identity' data-bind='text: sender'></span> has connected.
+                  </div>
 
-        <div class='notice' data-bind='if: action == "disconnect"'>
-          <span class='identity' data-bind='text: sender'></span> has disconnected.
-        </div>
+                  <div class='notice' data-bind='if: action == "disconnect"'>
+                    <span class='identity' data-bind='text: sender'></span> has disconnected.
+                  </div>
 
-        <div class='notice' data-bind='if: action == "identify"'>
-          <span class='identity' data-bind='text: sender'></span> now identifies as <span class='identity' data-bind='text: data'></span>.
-        </div>
+                  <div class='notice' data-bind='if: action == "identify"'>
+                    <span class='identity' data-bind='text: sender'></span> now identifies as <span class='identity' data-bind='text: data'></span>.
+                  </div>
 
-        <div class='message' data-bind='if: action == "say"'>
-          <span class='identity' data-bind='text: sender'></span>: <span class='text' data-bind='html: data'></span>
-        </div>
+                  <div class='message' data-bind='if: action == "say"'>
+                    <span class='identity' data-bind='text: sender'></span>: <span class='text' data-bind='html: data'></span>
+                  </div>
 
-        <div class='error' data-bind='text: data, if: action == "error"'></div>
-      </div>
-      <div id='chat-identity-list-container'>
-        <div id='chat-identity-list' data-bind='foreach: members'>
-          <div class='identity' data-bind='text: $data'></div>
+                  <div class='error' data-bind='text: data, if: action == "error"'></div>
+                </div>
+            </div>
+            <div class="large-2 columns">
+              <div id='chat-identity-list' data-bind='foreach: members'>
+                <div class='identity' data-bind='text: $data'></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="large-12 columns">
+              <div>
+                <form data-bind='submit: inputSubmitted, event: {keyup: inputKeyUp}'>
+                  <input id='chat-input' type='text' data-bind='value: inputBox' />
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div id='chat-input-box'>
-        <form data-bind='submit: inputSubmitted, event: {keyup: inputKeyUp}'>
-          <input id='chat-input' type='text' data-bind='value: inputBox' />
-        </form>
       </div>
     </div>
+
+    <audio id="soundHandle" style="display: none;"></audio>
+
+    <script>
+      document.write('<script src=' +
+      ('__proto__' in {} ? 'js/vendor/zepto' : 'js/vendor/jquery') +
+      '.js><\/script>')
+    </script>
+    <script src="js/foundation/foundation.js"></script>
+    <script src="js/foundation/foundation.alerts.js"></script>
+    <script src="js/foundation/foundation.clearing.js"></script>
+    <script src="js/foundation/foundation.cookie.js"></script>
+    <script src="js/foundation/foundation.dropdown.js"></script>
+    <script src="js/foundation/foundation.forms.js"></script>
+    <script src="js/foundation/foundation.joyride.js"></script>
+    <script src="js/foundation/foundation.magellan.js"></script>
+    <script src="js/foundation/foundation.orbit.js"></script>
+    <script src="js/foundation/foundation.placeholder.js"></script>
+    <script src="js/foundation/foundation.reveal.js"></script>
+    <script src="js/foundation/foundation.section.js"></script>
+    <script src="js/foundation/foundation.tooltips.js"></script>
+    <script src="js/foundation/foundation.topbar.js"></script>
+    <script src="js/foundation/foundation.interchange.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+
     <script type="application/javascript" src="/socket.io/socket.io.js"></script>
     <script type="application/javascript" src="vendor/knockout-2.2.1.min.js"></script>
     <script type="application/javascript" src="vendor/store-1.3.7.min.js"></script>
     <script type="application/javascript" src="bundle.js"></script>
-    <audio id="soundHandle" style="display: none;"></audio>
   </body>
 </html>

@@ -4,25 +4,32 @@ body {
   margin-top: 1em;
   margin-left: 1em;
 }
+.row .columns:first-of-type, .row .column:first-of-type {
+  padding-left: 0.5em;
+}
+.row .columns:last-of-type, .row .column:last-of-type {
+  padding-right: 0.5em;
+}
 #chat-client .error {
   font-style: italic;
   color: #a04040;
 }
-#chat-client {
-  width: 70em;
+.panel {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 }
 #chat-box .notice {
   font-style: italic;
   color: gray;
 }
-#chat-box, #chat-input, #chat-identity-list-container {
+#chat-box, #chat-input, #chat-identity-list {
   border-style: solid;
-  border-width: 0.1em;
+  border-width: 0.12em;
   border-color: gray;
+  background-color: white;
 }
 #chat-box {
   padding: 0.25em;
-  width: 59.4em;
   height: 30em;
   overflow-y:scroll;
   vertical-align: bottom;
@@ -32,40 +39,24 @@ body {
   padding-right: 0.25em;
   text-align: right;
 }
-#chat-box {
-  position: relative;
-  float:left;
-}
 #chat-box .message .identity {
   font-weight: bold;
 }
 #chat-box .message .text * {
   display: inline;
 }
-#chat-identity-list-container {
-  padding: 0.25em;
-  width: 9.26em;
-  height: 30em;
-  overflow-y: auto;
-  overflow-x: hidden;
-  float: right;
-}
 #chat-identity-list {
-  padding: 0;
+  padding: 0.25em;
+  height: 30em;
   overflow-x: hidden;
-  width: 100%;
 }
 #chat-identity-list .identity {
   text-align: right;
 }
-#chat-input-box {
-  width: 69.35em;
-  clear: both;
-}
 #chat-input {
-  margin-top: 0.13em;
+  margin-top: 0.5em;
+  margin-bottom: -0.5em;
   padding: 0.25em;
-  width: 100%;
   font-family: inherit;
   font-size: inherit;
 }
