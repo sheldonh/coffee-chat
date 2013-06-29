@@ -77,3 +77,7 @@ body {
     line-height: 2em;
   }
 }
+img {
+  max-height: 20em;
+  max-width: 40em;
+}
