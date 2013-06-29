@@ -48,8 +48,6 @@ document.addEventListener 'DOMContentLoaded', ->
   document.getElementById('chat-preconnect').style.display = 'none'
   document.getElementById('chat-client').style.display = ''
   document.getElementById('chat-input').focus()
-  if $(window).height() < 480
-    $('#chat-client').addClass('tiny')
 
   userInputProtocol = ->
     inputHistory =
