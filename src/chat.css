@@ -30,7 +30,6 @@ body {
 }
 #chat-box {
   padding: 0.25em;
-  height: 30em;
   overflow-y:scroll;
   vertical-align: bottom;
 }
@@ -48,8 +47,13 @@ body {
 #chat-identity-list {
   margin-left: -1.25em;
   padding: 0.25em;
-  height: 30em;
   overflow-x: hidden;
+}
+#chat-client #chat-box, #chat-client #chat-identity-list {
+  height: 30em;
+}
+#chat-client.tiny #chat-box, #chat-client.tiny #chat-identity-list {
+  height: 10em;
 }
 #chat-identity-list .identity {
   text-align: right;

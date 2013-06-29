@@ -25,6 +25,7 @@ document.addEventListener 'DOMContentLoaded', ->
     title: ko.observable(documentTitle.default)
     identity: ko.observable()
     members: ko.observableArray()
+    #messages: ko.observableArray([{sender: 'System', action: 'say', data: "Resolution: #{$(window).width()}x#{$(window).height()}"}])
     messages: ko.observableArray()
     messageAdded: (element, index, data) ->
       element.parentNode.scrollTop = element.parentNode.scrollHeight
@@ -47,6 +48,8 @@ document.addEventListener 'DOMContentLoaded', ->
   document.getElementById('chat-preconnect').style.display = 'none'
   document.getElementById('chat-client').style.display = ''
   document.getElementById('chat-input').focus()
+  if $(window).height() < 480
+    $('#chat-client').addClass('tiny')
 
   userInputProtocol = ->
     inputHistory =
