@@ -1,7 +1,8 @@
 # Requires that the HTML document include these libraries:
 #
 #   Requires: knockout, store
-#   Optional: jquery + jquery-ui (for highlight effect)
+#   Optional: jquery (for chat-box resizing)
+#             + jquery-ui (for highlight effect)
 
 mark_down_message = require('./mark_down_message')
 
@@ -44,6 +45,36 @@ document.addEventListener 'DOMContentLoaded', ->
 
   # Just for debugging in browser's JS console
   window.viewModel = viewModel
+
+  # From https://github.com/filamentgroup/jQuery-Pixel-Em-Converter
+  # Couldn't get it working as an externel dependency loaded from the HTML page.
+  # Consider http://verge.airve.com/ instead.
+  $.fn.toEm = (settings) ->
+    settings = jQuery.extend({scope: 'body'}, settings)
+    that = parseInt(@[0], 10)
+    e = jQuery('<div style="display: none; font-size: 1em; margin: 0; padding:0; height: auto; line-height: 1; border:0;">&nbsp;</div>')
+    scopeTest = e.appendTo(settings.scope)
+    scopeVal = scopeTest.height()
+    scopeTest.remove()
+    (that / scopeVal).toFixed(8)
+
+  resizeChatBox = ->
+    windowPixels = $(window).height()
+    windowEms = $(windowPixels).toEm()
+    if windowEms > 35
+      windowEms = 35
+    else if windowEms < 17
+      windowEms = 17
+    styleHeight = "#{windowEms - 10}em"
+    document.getElementById('chat-box').style.height = styleHeight
+    if $(window).width() > 767
+      document.getElementById('chat-identity-list').style.height = styleHeight
+    else
+      document.getElementById('chat-identity-list').style.height = "2.3em"
+
+  resizeChatBox()
+  window.addEventListener 'resize', resizeChatBox
+  window.addEventListener 'orientationchange', resizeChatBox
 
   document.getElementById('chat-preconnect').style.display = 'none'
   document.getElementById('chat-client').style.display = ''
