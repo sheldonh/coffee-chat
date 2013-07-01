@@ -28,33 +28,45 @@
           </div>
           <div class="row">
             <div class="large-10 columns">
-                <div id='chat-box' data-bind='foreach: {data: messages, afterAdd: messageAdded}'>
-                  <div class='notice' data-bind='if: action == "welcome"'>
+              <div id='chat-box' data-bind='template: {name: messageTemplate, foreach: messages, afterAdd: messageAdded}'>
+                <script type="text/html" id="welcome-message-template">
+                  <div class='notice'>
                     <div class='software-source'>
                       This is <a href='https://github.com/sheldonh/coffee-chat' target='_blank'>coffee-chat</a>.
                     </div>
                     You have connected as <span class='identity' data-bind='text: data'></span>.
                     Use the /nick command to rename.
                   </div>
+                </script>
 
-                  <div class='notice' data-bind='if: action == "connect"'>
+                <script type="text/html" id="connect-message-template">
+                  <div class='notice'>
                     <span class='identity' data-bind='text: sender'></span> has connected.
                   </div>
+                </script>
 
-                  <div class='notice' data-bind='if: action == "disconnect"'>
+                <script type="text/html" id="disconnect-message-template">
+                  <div class='notice'>
                     <span class='identity' data-bind='text: sender'></span> has disconnected.
                   </div>
+                </script>
 
-                  <div class='notice' data-bind='if: action == "identify"'>
+                <script type="text/html" id="identify-message-template">
+                  <div class='notice'>
                     <span class='identity' data-bind='text: sender'></span> now identifies as <span class='identity' data-bind='text: data'></span>.
                   </div>
+                </script>
 
-                  <div class='message' data-bind='if: action == "say"'>
+                <script type="text/html" id="say-message-template">
+                  <div class='message'>
                     <span class='identity' data-bind='text: sender'></span>: <span class='text' data-bind='html: data'></span>
                   </div>
+                </script>
 
-                  <div class='error' data-bind='text: data, if: action == "error"'></div>
-                </div>
+                <script type="text/html" id="error-message-template">
+                  <div class='error' data-bind='text: data'></div>
+                </script>
+              </div>
             </div>
             <div class="large-2 columns">
               <div id='chat-identity-list' data-bind='foreach: members'>

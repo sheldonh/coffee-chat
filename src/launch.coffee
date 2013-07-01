@@ -25,7 +25,6 @@ document.addEventListener 'DOMContentLoaded', ->
     title: ko.observable(documentTitle.default)
     identity: ko.observable()
     members: ko.observableArray()
-    #messages: ko.observableArray([{sender: 'System', action: 'say', data: "Resolution: #{$(window).width()}x#{$(window).height()}"}])
     messages: ko.observableArray()
     messageAdded: (element, index, data) ->
       element.parentNode.scrollTop = element.parentNode.scrollHeight
@@ -40,6 +39,7 @@ document.addEventListener 'DOMContentLoaded', ->
     inputSubmitted: (form) -> @input text if text if text = @inputBox()?.trim()
     keys: ko.observable().extend {notify: 'always'}
     inputKeyUp: (data, event) -> @keys event.keyCode
+    messageTemplate: (message) -> "#{message.action}-message-template"
   ko.applyBindings viewModel, document.getElementsByTagName('html')[0]
 
   # Just for debugging in browser's JS console
